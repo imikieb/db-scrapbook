@@ -1,7 +1,7 @@
 const errorFill = document.getElementById('error-fill');
 let validate = true;
 
-axios.defaults.baseURL = 'https://miki-db-scrapbook-api.herokuapp.com/';
+axios.defaults.baseURL = 'http://localhost:8080';
 
 function logout() {
     localStorage.setItem('userList', '');
