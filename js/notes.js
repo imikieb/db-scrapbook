@@ -11,14 +11,14 @@ function logout() {
 async function addNote(event) {
     event.preventDefault();
     
-    const user = await axios.get(`/${userLS}/users`);
+    const user = await axios.get(`/users/${userLS}`);
     const noteInput = document.getElementById('note-input');
     const newItem = {
         note: noteInput.value,
         user_id: user.data.id
     }
 
-    await axios.post(`/${userLS}/notes`, newItem)
+    await axios.post(`/notes/${user.data.id}`, newItem)
     .then(response => {
         noteInput.value = '';
         errorFill.innerHTML = '';
@@ -35,7 +35,7 @@ async function addNote(event) {
 }
 
 async function editNote(id) {
-    const user = await axios.get(`/${userLS}/users`);
+    const user = await axios.get(`/users/${userLS}`);
     const edit = prompt('Edite a nota:');
     const newNote = {
         note: edit,
@@ -50,13 +50,14 @@ async function editNote(id) {
         return alert('O campo ultrapassou o número máximo de caracteres.');
     }
 
-    await axios.put(`/${userLS}/notes/${id}`, newNote);
+    await axios.put(`/notes/${user.data.id}/${id}`, newNote);
 
     showNotes();
 }
 
 async function deleteNote(id) {
-    await axios.delete(`/${userLS}/notes/${id}`);
+    const user = await axios.get(`/users/${userLS}`);
+    await axios.delete(`/notes/${user.data.id}/${id}`);
 
     showNotes();
 }
@@ -64,11 +65,15 @@ async function deleteNote(id) {
 async function showNotes() {
     const table = document.getElementById('scroll-box');
     const userLS = localStorage.getItem('userList');
-    
-    await axios.get(`/${userLS}/notes`)
+    const user = await axios.get(`/users/${userLS}`);
+
+    await axios.get(`/notes/${user.data.id}`)
     .then(response => {
         table.innerHTML = '';
         const errands = response.data;
+        errands.sort(function(a, b) {
+            return (a.id - b.id)
+        });
         errands.map(item => {
             table.innerHTML += 
             `
