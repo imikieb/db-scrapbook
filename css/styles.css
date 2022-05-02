@@ -203,6 +203,8 @@ a {
 }
 
 .note-container {
+    position: relative;
+    top: 2.5%;
     width: 90%;
     height: 60%;
     -webkit-box-shadow: 0 0 1em #fff;
@@ -344,6 +346,10 @@ a {
     .redirect-button {
         height: 2em;
         font-size: 90%;
+    }
+
+    .input-fill {
+        font-size: 85%;  
     }
 
     .form-note-container h1 {
