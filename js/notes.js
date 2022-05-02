@@ -66,11 +66,14 @@ async function showNotes() {
     const table = document.getElementById('scroll-box');
     const userLS = localStorage.getItem('userList');
     const user = await axios.get(`/users/${userLS}`);
-    
+
     await axios.get(`/notes/${user.data.id}`)
     .then(response => {
         table.innerHTML = '';
         const errands = response.data;
+        errands.sort(function(a, b) {
+            return (a.id - b.id)
+        });
         errands.map(item => {
             table.innerHTML += 
             `
